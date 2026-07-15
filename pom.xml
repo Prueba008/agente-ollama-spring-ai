@@ -52,11 +52,11 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
+                        <release>${maven.compiler.release}</release>
                         <showDeprecation>true</showDeprecation>
                         <showWarnings>true</showWarnings>
                         <compilerArgs>
-                            <arg>-Xlint:deprecation</arg>
-                            <arg>-Xlint:unchecked</arg>
+                            <arg>-Xlint:all</arg>
                         </compilerArgs>
                     </configuration>
                 </plugin>
@@ -74,11 +74,17 @@
                     <executions>
                         <execution>
                             <id>enforce-java-and-maven</id>
-                            <goals><goal>enforce</goal></goals>
+                            <goals>
+                                <goal>enforce</goal>
+                            </goals>
                             <configuration>
                                 <rules>
-                                    <requireJavaVersion><version>[25,26)</version></requireJavaVersion>
-                                    <requireMavenVersion><version>[3.9.0,)</version></requireMavenVersion>
+                                    <requireJavaVersion>
+                                        <version>[25,26)</version>
+                                    </requireJavaVersion>
+                                    <requireMavenVersion>
+                                        <version>[3.9.0,)</version>
+                                    </requireMavenVersion>
                                 </rules>
                             </configuration>
                         </execution>
@@ -86,5 +92,11 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+            </plugin>
+        </plugins>
     </build>
 </project>
