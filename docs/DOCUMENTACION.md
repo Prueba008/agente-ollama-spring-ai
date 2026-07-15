@@ -2,7 +2,7 @@
 
 ## 1. Descripción General
 
-El sistema es un agente de IA corporativo que opera localmente utilizando Java 25, Spring Boot 4.0.x, Spring AI 2.0.x y Ollama para modelos de chat y embeddings. Implementa una arquitectura hexagonal con separación clara de responsabilidades a través de módulos Maven.
+El sistema es un agente de IA corporativo que opera localmente utilizando Java 25, Spring Boot 4.0.x, Spring AI 2.0.x y Ollama para modelos de chat. Implementa una arquitectura hexagonal con separación clara de responsabilidades a través de módulos Maven.
 
 ## 2. Arquitectura de Módulos
 
@@ -45,7 +45,7 @@ El sistema es un agente de IA corporativo que opera localmente utilizando Java 2
 
 **Componentes principales:**
 - `SpringAiAgentEngine`: Adaptador que implementa AgentEnginePort usando ChatClient de Spring AI
-- `SimpleRagAdapter`: Implementación de RAG usando VectorStore
+- `SimpleRagAdapter`: Implementación de RAG usando almacenamiento en memoria simple
 - `DeterministicInputGuardrail`: Validación determinista de entrada
 - `DeterministicOutputGuardrail`: Validación determinista de salida
 - `SimpleEvaluator`: Evaluador de calidad de respuestas
@@ -53,9 +53,9 @@ El sistema es un agente de IA corporativo que opera localmente utilizando Java 2
 - `AgentInfrastructureConfiguration`: Configuración de beans Spring
 
 **Características:**
-- Integración con Ollama para chat y embeddings
+- Integración con Ollama para chat
 - Memoria conversacional con InMemoryChatMemory
-- VectorStore simple para desarrollo
+- Almacenamiento de documentos en memoria para desarrollo
 - Configuración externalizada
 
 ### 2.4 agent-api
@@ -90,8 +90,8 @@ El sistema es un agente de IA corporativo que opera localmente utilizando Java 2
    
 3. **Recuperación de contexto (RAG)**
    - SimpleRagAdapter recupera documentos relevantes
-   - Configuración: top-k (default 4), min-similarity (default 0.65)
-   - Usa VectorStore con embeddings de Ollama
+   - Configuración: top-k (default 4)
+   - Usa almacenamiento en memoria con documentos formateados
    
 4. **Ejecución del motor de IA**
    - SpringAiAgentEngine usa ChatClient de Spring AI
@@ -123,10 +123,9 @@ El sistema es un agente de IA corporativo que opera localmente utilizando Java 2
 
 **Pasos:**
 1. Recibir contenido del documento y nombre de fuente
-2. Dividir en chunks con solapamiento
-3. Generar embeddings usando Ollama
-4. Almacenar en VectorStore con metadatos
-5. Indexar para búsqueda semántica
+2. Formatear documento con nombre de fuente
+3. Almacenar en lista en memoria
+4. Recuperar documentos por orden de ingreso (limitado por top-k)
 
 **Nota:** Este proceso está preparado en la arquitectura pero requiere endpoint específico.
 
@@ -151,10 +150,8 @@ El sistema es un agente de IA corporativo que opera localmente utilizando Java 2
 |----------|---------|-------------|
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | URL del servidor Ollama |
 | `OLLAMA_CHAT_MODEL` | `qwen3:8b` | Modelo para chat y tool calling |
-| `OLLAMA_EMBEDDING_MODEL` | `nomic-embed-text` | Modelo para embeddings |
 | `AGENT_MAX_INPUT_CHARS` | `12000` | Máximo caracteres de entrada |
 | `AGENT_RAG_TOP_K` | `4` | Documentos a recuperar en RAG |
-| `AGENT_MIN_SIMILARITY` | `0.65` | Similitud mínima para RAG |
 | `AGENT_MIN_RELEVANCE` | `0.70` | Umbral mínimo de relevancia |
 | `AGENT_MIN_FAITHFULNESS` | `0.75` | Umbral mínimo de fidelidad |
 
@@ -163,10 +160,6 @@ El sistema es un agente de IA corporativo que opera localmente utilizando Java 2
 **Chat Model:**
 - Modelo: Ollama (configurable)
 - Temperature: 0.2 (baja temperatura para respuestas más deterministas)
-
-**Embedding Model:**
-- Modelo: Ollama nomic-embed-text
-- Usado para RAG y búsqueda semántica
 
 **Chat Memory:**
 - Implementación: InMemoryChatMemory
@@ -281,16 +274,18 @@ El sistema es un agente de IA corporativo que opera localmente utilizando Java 2
 
 ### 9.1 Optimizaciones Actuales
 - Memoria en memoria para desarrollo
-- VectorStore simple (no persistente)
+- Almacenamiento de documentos simple en ArrayList
 - ChatMemory con ventana de mensajes
 
 ### 9.2 Limitaciones Conocidas
 - Sin persistencia productiva de memoria
-- VectorStore no escalable (SimpleVectorStore)
+- Almacenamiento de documentos no escalable (ArrayList)
 - Sin mecanismos de cache distribuido
+- Sin búsqueda semántica real (recuperación por orden de ingreso)
 
 ### 9.3 Evolución Sugerida
-- Reemplazar SimpleVectorStore por PGVector
+- Implementar VectorStore real con embeddings (PGVector)
+- Añadir búsqueda semántica con similitud
 - Persistir memoria mediante JDBC
 - Añadir cache distribuido (Redis)
 - Implementar circuit breaker para llamadas a Ollama

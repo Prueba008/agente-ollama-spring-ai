@@ -7,7 +7,7 @@ Construir una implementación de referencia, ejecutable de forma local y sin pro
 - Java 25.
 - Spring Boot 4.0.x.
 - Spring AI 2.0.x.
-- Ollama local para chat y embeddings.
+- Ollama local para chat.
 - Maven multimódulo.
 - Arquitectura hexagonal.
 
@@ -36,7 +36,6 @@ Una ejecución se considera exitosa cuando:
 - API REST síncrona.
 - Conversaciones identificadas mediante `conversationId`.
 - Modelo local de chat en Ollama.
-- Modelo local de embeddings en Ollama.
 - Tool calling con herramientas Java declarativas.
 - RAG sobre documentos locales.
 - Memoria de ventana por conversación.
@@ -80,7 +79,7 @@ Una ejecución se considera exitosa cuando:
 
 **Entrada:** texto, nombre de fuente y metadatos.
 
-**Flujo:** dividir, enriquecer, generar embeddings y almacenar en el `VectorStore`.
+**Flujo:** formatear documento con nombre de fuente y almacenar en lista en memoria.
 
 ### CU-03 — Consultar estado
 
@@ -123,8 +122,8 @@ agent-application ─────► agent-domain
    │
 agent-infrastructure
    ├── Spring AI ChatClient
-   ├── Ollama chat/embeddings
-   ├── VectorStore / RAG
+   ├── Ollama chat
+   ├── RAG simple (ArrayList)
    ├── ChatMemory
    ├── Tools
    ├── Guardrails
@@ -152,14 +151,12 @@ agent-infrastructure
 Valores iniciales configurables:
 
 - Chat y tool calling: `qwen3:8b`.
-- Embeddings: `nomic-embed-text`.
 - Evaluador opcional: el mismo modelo de chat; en producción local se recomienda separar el juez.
 
 Comandos:
 
 ```bash
 ollama pull qwen3:8b
-ollama pull nomic-embed-text
 ollama serve
 ```
 
@@ -209,13 +206,10 @@ La validación Java es obligatoria aunque el proveedor soporte JSON Schema nativ
 Pipeline inicial:
 
 1. Ingesta de texto.
-2. Chunking con solapamiento.
-3. Metadatos de fuente.
-4. Embeddings con Ollama.
-5. Persistencia en `SimpleVectorStore` para desarrollo.
-6. Recuperación top-k.
-7. Inyección mediante Advisor.
-8. Citas en la respuesta.
+2. Formateo con nombre de fuente.
+3. Almacenamiento en ArrayList.
+4. Recuperación por orden de ingreso (limitado por top-k).
+5. Inyección mediante Advisor.
 
 Evolución productiva sugerida: PostgreSQL + PGVector.
 
@@ -290,10 +284,8 @@ Variables principales:
 |---|---|
 | `OLLAMA_BASE_URL` | `http://localhost:11434` |
 | `OLLAMA_CHAT_MODEL` | `qwen3:8b` |
-| `OLLAMA_EMBEDDING_MODEL` | `nomic-embed-text` |
 | `AGENT_MAX_INPUT_CHARS` | `12000` |
 | `AGENT_RAG_TOP_K` | `4` |
-| `AGENT_MIN_SIMILARITY` | `0.65` |
 
 ## 18. Pruebas
 
@@ -317,9 +309,10 @@ Variables principales:
 
 ## 20. Evolución
 
-1. Reemplazar almacenamiento local por PGVector.
-2. Persistir memoria mediante JDBC.
-3. Añadir autenticación y autorización por tool.
-4. Incorporar retry, circuit breaker y rate limiting.
-5. Añadir evaluación offline versionada.
-6. Incorporar MCP sólo cuando existan integraciones reutilizables.
+1. Implementar VectorStore real (PGVector).
+2. Añadir búsqueda semántica con similitud.
+3. Persistir memoria mediante JDBC.
+4. Añadir autenticación y autorización por tool.
+5. Incorporar retry, circuit breaker y rate limiting.
+6. Añadir evaluación offline versionada.
+7. Incorporar MCP sólo cuando existan integraciones reutilizables.
