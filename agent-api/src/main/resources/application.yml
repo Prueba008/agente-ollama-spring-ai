@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: agente-ollama-spring-ai
+  ai:
+    model:
+      chat: ollama
+      embedding: ollama
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+      chat:
+        options:
+          model: ${OLLAMA_CHAT_MODEL:qwen3:8b}
+          temperature: 0.2
+      embedding:
+        options:
+          model: ${OLLAMA_EMBEDDING_MODEL:nomic-embed-text}
+
+agent:
+  guardrails:
+    max-input-chars: ${AGENT_MAX_INPUT_CHARS:12000}
+  rag:
+    top-k: ${AGENT_RAG_TOP_K:4}
+    min-similarity: ${AGENT_MIN_SIMILARITY:0.65}
+  evaluation:
+    min-relevance: ${AGENT_MIN_RELEVANCE:0.70}
+    min-faithfulness: ${AGENT_MIN_FAITHFULNESS:0.75}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+
+logging:
+  level:
+    org.springframework.ai: INFO

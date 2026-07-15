@@ -1,0 +1,11 @@
+agente-ollama-spring-ai/.gitignore
+agente-ollama-spring-ai/ESTRUCTURA.txt
+agente-ollama-spring-ai/README.md
+agente-ollama-spring-ai/SPEC.md
+agente-ollama-spring-ai/agent-api/pom.xml
+agente-ollama-spring-ai/agent-api/src/main/resources/application.yml
+agente-ollama-spring-ai/agent-application/pom.xml
+agente-ollama-spring-ai/agent-domain/pom.xml
+agente-ollama-spring-ai/agent-infrastructure/pom.xml
+agente-ollama-spring-ai/docker-compose.yml
+agente-ollama-spring-ai/pom.xml
