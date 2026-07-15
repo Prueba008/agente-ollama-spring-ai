@@ -5,17 +5,13 @@ import com.maasteria.agent.application.port.out.AgentEnginePort;
 import com.maasteria.agent.application.port.out.InputGuardrailPort;
 import com.maasteria.agent.application.port.out.OutputGuardrailPort;
 import com.maasteria.agent.application.service.AskAgentService;
+import com.maasteria.agent.infrastructure.ai.SimpleRagAdapter;
 import com.maasteria.agent.infrastructure.ai.SpringAiAgentEngine;
+import com.maasteria.agent.infrastructure.evaluator.SimpleEvaluator;
 import com.maasteria.agent.infrastructure.guardrail.DeterministicInputGuardrail;
 import com.maasteria.agent.infrastructure.guardrail.DeterministicOutputGuardrail;
-import com.maasteria.agent.infrastructure.ai.SimpleRagAdapter;
-import com.maasteria.agent.infrastructure.evaluator.SimpleEvaluator;
 import com.maasteria.agent.infrastructure.tool.SystemTools;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
-import org.springframework.ai.vectorstore.SimpleVectorStore;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -31,11 +27,6 @@ public class AgentInfrastructureConfiguration {
     }
 
     @Bean
-    ChatMemory chatMemory() {
-        return new InMemoryChatMemory();
-    }
-
-    @Bean
     ChatClient.Builder chatClientBuilder(org.springframework.ai.chat.model.ChatModel chatModel) {
         return ChatClient.builder(chatModel);
     }
@@ -46,13 +37,8 @@ public class AgentInfrastructureConfiguration {
     }
 
     @Bean
-    VectorStore vectorStore(org.springframework.ai.embedding.EmbeddingModel embeddingModel) {
-        return new SimpleVectorStore(embeddingModel);
-    }
-
-    @Bean
-    com.maasteria.agent.application.port.out.RagPort ragPort(VectorStore vectorStore, Environment environment) {
-        return new SimpleRagAdapter(vectorStore, environment);
+    com.maasteria.agent.application.port.out.RagPort ragPort(Environment environment) {
+        return new SimpleRagAdapter(environment);
     }
 
     @Bean
@@ -72,8 +58,8 @@ public class AgentInfrastructureConfiguration {
     }
 
     @Bean
-    AgentEnginePort agentEngine(ChatClient.Builder builder, ChatMemory chatMemory, SystemTools systemTools) {
-        return new SpringAiAgentEngine(builder, chatMemory, systemTools);
+    AgentEnginePort agentEngine(ChatClient.Builder builder, SystemTools systemTools) {
+        return new SpringAiAgentEngine(builder, systemTools);
     }
 
     @Bean

@@ -5,8 +5,6 @@ import com.maasteria.agent.domain.model.AgentAnswer;
 import com.maasteria.agent.domain.model.AgentQuestion;
 import com.maasteria.agent.infrastructure.tool.SystemTools;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 
 public final class SpringAiAgentEngine implements AgentEnginePort {
 
@@ -21,10 +19,9 @@ public final class SpringAiAgentEngine implements AgentEnginePort {
     private final ChatClient chatClient;
     private final SystemTools systemTools;
 
-    public SpringAiAgentEngine(ChatClient.Builder builder, ChatMemory chatMemory, SystemTools systemTools) {
+    public SpringAiAgentEngine(ChatClient.Builder builder, SystemTools systemTools) {
         this.chatClient = builder
                 .defaultSystem(SYSTEM_PROMPT)
-                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
                 .build();
         this.systemTools = systemTools;
     }
@@ -33,7 +30,6 @@ public final class SpringAiAgentEngine implements AgentEnginePort {
     public AgentAnswer execute(AgentQuestion question) {
         AgentAnswer answer = chatClient.prompt()
                 .user(question.question())
-                .advisors(advisor -> advisor.param(ChatMemory.CONVERSATION_ID, question.conversationId()))
                 .tools(systemTools)
                 .call()
                 .entity(AgentAnswer.class);
