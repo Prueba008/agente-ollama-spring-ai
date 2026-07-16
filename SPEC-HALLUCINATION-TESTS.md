@@ -113,3 +113,9 @@ Para producción se requiere un dataset versionado con pregunta, contexto espera
 ## 9. Limitaciones
 
 El evaluador determinístico utiliza solapamiento léxico y es adecuado para regresión controlada, no para demostrar verdad semántica. Paráfrasis, negaciones y contradicciones complejas necesitan un evaluador semántico o LLM-as-judge, siempre contrastado contra etiquetas humanas. La confianza informada por el modelo nunca debe usarse sola como grado de certeza.
+
+## 10. Suite de verdad semántica
+
+`SemanticTruthTest` materializa esta limitación mediante un corpus humano etiquetado que contiene paráfrasis, negaciones explícitas e implícitas, contradicciones complejas y ausencia de información. El test demuestra además un falso positivo deliberado del solapamiento léxico: agregar una negación conserva casi todos los tokens, pero invierte la verdad de la afirmación.
+
+Todo juez semántico debe ejecutarse mediante `SemanticJudgeBenchmark`, que rechaza corpus vacíos y genera matriz de confusión, accuracy, precision, recall y F1 por etiqueta. La confianza autoinformada por el agente no pertenece al contrato `SemanticJudge`, por lo que una respuesta falsa conserva la etiqueta `CONTRADICTED` tanto con confianza 0.10 como con 0.99.
