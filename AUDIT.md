@@ -2,11 +2,11 @@
 
 ## Resultado
 
-La base original no cumplía el flujo definido por `SPEC.md`: recuperaba RAG sin inyectarlo al modelo, no configuraba memoria, el evaluador requería un bean inexistente, faltaba ingesta REST y una prueba usaba una firma eliminada. La migración adopta Java 21 LTS como requisito vigente.
+La base original no cumplía el flujo definido por `SPEC.md`: recuperaba RAG sin inyectarlo al modelo, no configuraba memoria, el evaluador requería un bean inexistente, faltaba ingesta REST y una prueba usaba una firma eliminada. La migración adopta Java 25 como requisito vigente.
 
 ## Correcciones aplicadas
 
-- Compilación, Enforcer y GitHub Actions alineados con Java 21.
+- Compilación, Enforcer y GitHub Actions alineados con Java 25.
 - Contexto RAG inyectado explícitamente en el prompt; recuperación concurrente, limitada por `top-k` y ordenada por coincidencia léxica.
 - Endpoint `POST /api/v1/agent/documents` con validación para la ingesta local.
 - Memoria por `conversationId` con ventana configurable y `MessageChatMemoryAdvisor`.
@@ -28,7 +28,7 @@ La base original no cumplía el flujo definido por `SPEC.md`: recuperaba RAG sin
 | Requisito | Estado |
 |---|---|
 | Maven multimódulo / hexagonal | Cumple |
-| Java 21 | Cumple |
+| Java 25 | Cumple |
 | ChatClient / Ollama | Cumple |
 | Tool calling autorizado | Cumple para `getSystemTime` |
 | Structured Output | Cumple |
@@ -36,5 +36,5 @@ La base original no cumplía el flujo definido por `SPEC.md`: recuperaba RAG sin
 | Memoria por conversación | Cumple |
 | Guardrails Java | Cumple |
 | Evaluadores y umbrales | Cumple, con warnings |
-| CI sin Ollama | Cumple; `mvn clean verify` exitoso en GitHub Actions con Temurin 21 |
+| CI sin Ollama | Cumple; `mvn clean verify` exitoso en GitHub Actions con Temurin 25 |
 | Integración real Ollama | Opt-in mediante `OLLAMA_BASE_URL` |

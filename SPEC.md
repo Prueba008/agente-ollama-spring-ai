@@ -1,10 +1,10 @@
-# SPEC — Agente local con Java 21, Spring Boot, Spring AI y Ollama
+# SPEC — Agente local con Java 25, Spring Boot, Spring AI y Ollama
 
 ## 1. Propósito
 
 Construir una implementación de referencia, ejecutable de forma local y sin proveedores externos, para un agente de IA robusto basado en:
 
-- Java 21 LTS.
+- Java 25.
 - Spring Boot 4.0.x.
 - Spring AI 2.0.x.
 - Ollama local para chat.

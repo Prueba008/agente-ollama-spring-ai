@@ -2,7 +2,7 @@
 
 ## 1. Descripción General
 
-El sistema es un agente de IA corporativo que opera localmente utilizando Java 21 LTS, Spring Boot 4.0.x, Spring AI 2.0.x y Ollama para modelos de chat. Implementa una arquitectura hexagonal con separación clara de responsabilidades a través de módulos Maven.
+El sistema es un agente de IA corporativo que opera localmente utilizando Java 25, Spring Boot 4.0.x, Spring AI 2.0.x y Ollama para modelos de chat. Implementa una arquitectura hexagonal con separación clara de responsabilidades a través de módulos Maven.
 
 ## 2. Arquitectura de Módulos
 

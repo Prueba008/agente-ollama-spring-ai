@@ -1,10 +1,10 @@
 # Agente Ollama + Spring AI
 
-Proyecto Maven multimódulo de referencia para Java 21 LTS, Spring Boot 4 y Spring AI 2 con inferencia local en Ollama.
+Proyecto Maven multimódulo de referencia para Java 25, Spring Boot 4 y Spring AI 2 con inferencia local en Ollama.
 
 ## Requisitos
 
-- JDK 21
+- JDK 25
 - Maven 3.9+
 - Ollama
 
