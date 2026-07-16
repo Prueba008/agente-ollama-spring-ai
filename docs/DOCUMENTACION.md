@@ -6,6 +6,58 @@ El sistema es un agente de IA corporativo que opera localmente utilizando Java 2
 
 ## 2. Arquitectura de Módulos
 
+## Pruebas de alucinación y certeza
+
+Se incorporaron cinco pruebas específicas:
+
+1. Respuesta totalmente respaldada.
+2. Afirmación inventada.
+3. Respuesta declarada como fundamentada sin evidencia.
+4. Reconocimiento correcto de ausencia de información.
+5. Fuente declarada que no fue recuperada.
+
+Además, existen dos tests de integración determinística del flujo `RAG → agente → guardrails → evaluador`. Las métricas calculadas son `faithfulness`, `source_coherence`, `hallucination_risk`, `certainty`, `relevance`, `format_valid` y `tool_usage`. Cuando `hallucination_risk > 0.25`, el servicio incorpora automáticamente una advertencia.
+
+Las integraciones reales con Ollama se separaron mediante Maven Failsafe y el perfil `ollama-it`, eliminando definitivamente `Skipped: 3` del CI estándar.
+
+```bash
+# CI determinístico
+mvn clean verify
+
+# Integración real
+OLLAMA_BASE_URL=http://localhost:11434 \
+OLLAMA_CHAT_MODEL=qwen3:8b \
+mvn -Pollama-it clean verify
+```
+
+La especificación está en `SPEC-HALLUCINATION-TESTS.md`. `certainty` es un indicador técnico compuesto, no una probabilidad matemática de verdad. Para calibrarlo como probabilidad se necesita un corpus humano etiquetado y medir precisión, recall, F1, Brier score y expected calibration error.
+
+## RAG modular con Ollama y PostgreSQL/pgvector
+
+La implementación productiva reemplaza la lista en memoria por componentes desacoplados:
+
+| Componente | Responsabilidad |
+|---|---|
+| `DocumentChunkerPort` | Contrato de segmentación documental. |
+| `OverlappingTextChunker` | Chunks determinísticos con tamaño y solapamiento configurables. |
+| `VectorIndexPort` | Contrato independiente para indexar y buscar vectores. |
+| `PgVectorIndexAdapter` | Integración Spring AI `VectorStore` con PostgreSQL/pgvector. |
+| `VectorRagService` | Orquestación de ingesta y recuperación semántica. |
+| Ollama `nomic-embed-text` | Conversión de chunks y consultas a embeddings de 768 dimensiones. |
+
+PostgreSQL se convierte en base vectorial mediante `CREATE EXTENSION vector`, una columna `embedding vector(768)` y un índice HNSW con `vector_cosine_ops`. PostgreSQL almacena y compara vectores; Ollama genera los embeddings.
+
+Los scripts versionados son:
+
+- `00-enable-extensions.sql`: habilita `vector`, `hstore` y `uuid-ossp`.
+- `01-create-vector-store.sql`: crea la tabla vectorial.
+- `02-create-vector-index.sql`: crea HNSW y el índice de metadata.
+- `03-verify-vector-store.sql`: verifica extensiones, dimensión, índices y cantidad de chunks.
+- `04-recreate-for-new-dimensions.sql`: recreación destructiva ante cambio de modelo/dimensión.
+- `ingest-directory.sh`: reingesta masiva de archivos Markdown/TXT mediante la API.
+
+La migración detallada se encuentra en `docs/MIGRACION-RAG-PGVECTOR.md`. Las fuentes oficiales utilizadas son [Spring AI PGvector](https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html), [Spring AI Ollama Embeddings](https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html), [Spring AI ETL](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html) y [pgvector](https://github.com/pgvector/pgvector).
+
 ### 2.1 agent-domain
 **Responsabilidad:** Contiene los modelos de dominio, reglas de negocio y excepciones independientes del framework.
 
