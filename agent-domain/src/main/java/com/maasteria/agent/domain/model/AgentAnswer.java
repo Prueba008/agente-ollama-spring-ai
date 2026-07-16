@@ -17,5 +17,8 @@ public record AgentAnswer(
         if (confidence < 0.0 || confidence > 1.0) {
             throw new IllegalArgumentException("confidence debe estar entre 0 y 1");
         }
+        if (sources.stream().anyMatch(java.util.Objects::isNull)) {
+            throw new IllegalArgumentException("sources no admite valores nulos");
+        }
     }
 }
