@@ -84,6 +84,14 @@ El comando `mvn clean verify` comprueba dirección de dependencias hexagonales, 
 
 La especificación completa está en [SPEC.md](SPEC.md).
 
+## OpenAPI y Swagger
+
+Con la aplicación iniciada:
+
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+- OpenAPI YAML: `http://localhost:8080/v3/api-docs.yaml`
+
 La documentación funcional y de arquitectura, con diagramas renderizados, está disponible en
 [docs/Documentacion_Funcional_Tecnica_Agente_Ollama_Spring_AI_Java25.doc](docs/Documentacion_Funcional_Tecnica_Agente_Ollama_Spring_AI_Java25.doc).
 

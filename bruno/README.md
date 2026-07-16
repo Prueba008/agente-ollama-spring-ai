@@ -26,10 +26,11 @@ npx @usebruno/cli run bruno/05-guardrails --env Local
 ## Orden de la colección
 
 1. Health check.
-2. Ingesta y validaciones documentales.
-3. Chat, RAG y tool calling.
-4. Memoria conversacional.
-5. Guardrails y Bean Validation.
+2. OpenAPI y Swagger UI.
+3. Ingesta y validaciones documentales.
+4. Chat, RAG y tool calling.
+5. Memoria conversacional.
+6. Guardrails y Bean Validation.
 
 Los escenarios de RAG, memoria y tool calling dependen del modelo y de los servicios locales. Las pruebas de contratos inválidos y prompt injection son determinísticas cuando la aplicación está disponible.
 

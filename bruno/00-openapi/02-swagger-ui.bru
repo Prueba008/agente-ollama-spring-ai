@@ -1,0 +1,17 @@
+meta {
+  name: Swagger UI
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/swagger-ui.html
+  body: none
+  auth: none
+}
+
+tests {
+  test("Swagger UI está disponible", function () {
+    expect([200, 302]).to.include(res.getStatus());
+  });
+}
