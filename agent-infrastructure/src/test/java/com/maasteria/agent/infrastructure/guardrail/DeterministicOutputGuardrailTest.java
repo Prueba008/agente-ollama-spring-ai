@@ -2,6 +2,7 @@ package com.maasteria.agent.infrastructure.guardrail;
 
 import com.maasteria.agent.domain.exception.GuardrailViolationException;
 import com.maasteria.agent.domain.model.AgentAnswer;
+import com.maasteria.agent.domain.model.SourceReference;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,7 +17,8 @@ class DeterministicOutputGuardrailTest {
 
     @Test
     void aceptaUnaRespuestaValida() {
-        AgentAnswer answer = new AgentAnswer("Respuesta válida", List.of(), List.of(), true, 0.9, List.of());
+        AgentAnswer answer = new AgentAnswer("Respuesta válida",
+                List.of(new SourceReference("documento.md", "chunk-1")), List.of(), true, 0.9, List.of());
 
         AgentAnswer result = assertDoesNotThrow(() -> guardrail.validate(answer));
 
