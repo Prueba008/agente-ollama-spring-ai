@@ -64,6 +64,20 @@ OLLAMA_BASE_URL=http://localhost:11434 OLLAMA_CHAT_MODEL=qwen3:8b \
 La definición de métricas, bandas de riesgo, casos y limitaciones está en
 [SPEC-HALLUCINATION-TESTS.md](SPEC-HALLUCINATION-TESTS.md).
 
+## RAG vectorial persistente
+
+El RAG productivo utiliza Ollama `nomic-embed-text` para embeddings y PostgreSQL con `pgvector`, índice HNSW y distancia coseno. El chunking, la indexación y la búsqueda están desacoplados mediante puertos de aplicación.
+
+```bash
+docker compose up -d postgres ollama
+ollama pull nomic-embed-text
+mvn -pl agent-api -am spring-boot:run
+```
+
+La creación de extensiones, tabla e índices está versionada en `scripts/`. La migración completa desde la implementación en memoria se detalla en [docs/MIGRACION-RAG-PGVECTOR.md](docs/MIGRACION-RAG-PGVECTOR.md).
+
+Referencias oficiales: [Spring AI PGvector](https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html), [Ollama Embeddings](https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html), [Spring AI ETL](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html) y [pgvector](https://github.com/pgvector/pgvector).
+
 La especificación completa está en [SPEC.md](SPEC.md).
 
 La ficha técnica y el estado del proyecto están disponibles en
