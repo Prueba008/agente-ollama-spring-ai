@@ -49,7 +49,7 @@ public final class AskAgentService implements AskAgentUseCase {
                 retrievedContext.size(), question.conversationId());
         
         // 3. Ejecutar el motor del agente
-        AgentAnswer answer = engine.execute(question);
+        AgentAnswer answer = engine.execute(question, retrievedContext);
         
         // 4. Validar salida con guardrails
         answer = outputGuardrail.validate(answer);
@@ -70,6 +70,14 @@ public final class AskAgentService implements AskAgentUseCase {
         long duration = System.currentTimeMillis() - startTime;
         log.info("Tiempo total de procesamiento: {}ms", duration);
         
-        return answer;
+        List<String> warnings = new java.util.ArrayList<>(answer.warnings());
+        if (metrics.getOrDefault("relevance", 1.0) < 0.70) {
+            warnings.add("La respuesta no alcanzó el umbral de relevancia");
+        }
+        if (metrics.getOrDefault("faithfulness", 1.0) < 0.75) {
+            warnings.add("La respuesta no alcanzó el umbral de fidelidad");
+        }
+        return new AgentAnswer(answer.answer(), answer.sources(), answer.toolsUsed(),
+                answer.grounded(), answer.confidence(), warnings);
     }
 }
