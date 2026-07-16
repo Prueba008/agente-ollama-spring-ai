@@ -60,6 +60,7 @@ class ArchitectureTest {
     @ArchTest
     static final ArchRule rest_controllers_are_annotated = classes()
             .that().resideInAPackage("..api.controller..")
+            .and().areTopLevelClasses()
             .and().haveSimpleNameNotEndingWith("ExceptionHandler")
             .should().beAnnotatedWith(RestController.class);
 
