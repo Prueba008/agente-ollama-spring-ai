@@ -1,0 +1,32 @@
+meta {
+  name: Recuperar dato conversacional
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/agent/chat
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "conversationId": "{{memoryConversationId}}",
+    "question": "{{memoryRecallQuestion}}"
+  }
+}
+
+tests {
+  test("responde el segundo turno", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("recupera el dato desde la memoria", function () {
+    expect(res.getBody().answer.toLowerCase()).to.include("sergio");
+  });
+}

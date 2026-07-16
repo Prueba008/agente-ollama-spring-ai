@@ -1,0 +1,14 @@
+[
+  {
+    "ragConversationId": "bruno-rag-outbox-001",
+    "ragQuestion": "Según la documentación disponible, ¿cómo evita inconsistencias el patrón outbox?"
+  },
+  {
+    "ragConversationId": "bruno-rag-hexagonal-002",
+    "ragQuestion": "Según la documentación, ¿cómo protege el dominio la arquitectura hexagonal?"
+  },
+  {
+    "ragConversationId": "bruno-rag-tools-003",
+    "ragQuestion": "Según la documentación, ¿qué restricciones deben cumplir las herramientas Java?"
+  }
+]

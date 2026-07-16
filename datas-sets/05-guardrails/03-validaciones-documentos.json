@@ -1,0 +1,14 @@
+[
+  {
+    "case": "sourceName-vacio",
+    "sourceName": "",
+    "content": "Contenido válido",
+    "expectedStatus": 400
+  },
+  {
+    "case": "content-vacio",
+    "sourceName": "documento-vacio.md",
+    "content": "",
+    "expectedStatus": 400
+  }
+]

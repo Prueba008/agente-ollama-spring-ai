@@ -1,0 +1,28 @@
+meta {
+  name: Rechazar sourceName vacío
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/agent/documents
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "sourceName": "",
+    "content": "Contenido válido"
+  }
+}
+
+tests {
+  test("rechaza el contrato inválido", function () {
+    expect(res.getStatus()).to.equal(400);
+  });
+}

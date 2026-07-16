@@ -1,0 +1,32 @@
+meta {
+  name: Ingestar documento válido
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/agent/documents
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "sourceName": "{{documentSourceName}}",
+    "content": "{{documentContent}}"
+  }
+}
+
+tests {
+  test("acepta la ingesta", function () {
+    expect(res.getStatus()).to.equal(202);
+  });
+
+  test("no devuelve contenido", function () {
+    expect(res.getBody()).to.satisfy((body) => body === null || body === "" || Object.keys(body).length === 0);
+  });
+}

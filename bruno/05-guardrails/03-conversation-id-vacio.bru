@@ -1,0 +1,28 @@
+meta {
+  name: Rechazar conversationId vacío
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/agent/chat
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "conversationId": "",
+    "question": "Pregunta válida"
+  }
+}
+
+tests {
+  test("Bean Validation rechaza la conversación", function () {
+    expect(res.getStatus()).to.equal(400);
+  });
+}

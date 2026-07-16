@@ -1,0 +1,14 @@
+[
+  {
+    "toolConversationId": "bruno-tool-buenos-aires-001",
+    "toolQuestion": "¿Qué fecha y hora es en America/Argentina/Buenos_Aires? Usa la herramienta disponible."
+  },
+  {
+    "toolConversationId": "bruno-tool-utc-002",
+    "toolQuestion": "¿Qué fecha y hora es en UTC? Usa la herramienta disponible."
+  },
+  {
+    "toolConversationId": "bruno-tool-madrid-003",
+    "toolQuestion": "¿Qué fecha y hora es en Europe/Madrid? Usa la herramienta disponible."
+  }
+]

@@ -1,0 +1,23 @@
+meta {
+  name: Actuator health
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/actuator/health
+  body: none
+  auth: none
+}
+
+tests {
+  test("responde HTTP 200", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("informa el estado de la aplicación", function () {
+    const body = res.getBody();
+    expect(body).to.be.an("object");
+    expect(body).to.have.property("status");
+  });
+}
