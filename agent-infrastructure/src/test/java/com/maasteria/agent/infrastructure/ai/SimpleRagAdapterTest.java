@@ -26,7 +26,7 @@ class SimpleRagAdapterTest {
         ragAdapter.ingestDocument("Contenido de prueba del documento", "documento-test.md");
         ragAdapter.ingestDocument("Otro contenido importante", "otro-doc.txt");
 
-        AgentQuestion question = new AgentQuestion("conv-test", "¿Qué información hay?");
+        AgentQuestion question = new AgentQuestion("conv-test", "contenido documento importante");
         
         List<String> context = ragAdapter.retrieveRelevantContext(question);
         
@@ -45,7 +45,7 @@ class SimpleRagAdapterTest {
         ragAdapter.ingestDocument("Documento 4", "doc4.md");
         ragAdapter.ingestDocument("Documento 5", "doc5.md");
 
-        AgentQuestion question = new AgentQuestion("conv-test", "Pregunta");
+        AgentQuestion question = new AgentQuestion("conv-test", "Documento");
         
         List<String> context = ragAdapter.retrieveRelevantContext(question);
         
@@ -66,7 +66,7 @@ class SimpleRagAdapterTest {
     void formateaDocumentosCorrectamente() {
         ragAdapter.ingestDocument("Mi contenido", "mi-archivo.md");
         
-        AgentQuestion question = new AgentQuestion("conv-test", "Pregunta");
+        AgentQuestion question = new AgentQuestion("conv-test", "contenido");
         List<String> context = ragAdapter.retrieveRelevantContext(question);
         
         assertEquals(1, context.size());

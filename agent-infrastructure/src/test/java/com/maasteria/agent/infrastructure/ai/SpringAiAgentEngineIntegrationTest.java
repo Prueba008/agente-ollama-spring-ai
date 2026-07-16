@@ -28,7 +28,7 @@ class SpringAiAgentEngineIntegrationTest {
     void ejecutaPreguntaSimpleConOllama() {
         AgentQuestion question = new AgentQuestion("conv-test-001", "¿Qué es Java?");
         
-        AgentAnswer answer = agentEngine.execute(question);
+        AgentAnswer answer = agentEngine.execute(question, java.util.List.of());
         
         assertNotNull(answer);
         assertNotNull(answer.answer());
@@ -41,7 +41,7 @@ class SpringAiAgentEngineIntegrationTest {
         AgentQuestion question = new AgentQuestion("conv-test-002", 
             "¿Qué hora es en Buenos Aires?");
         
-        AgentAnswer answer = agentEngine.execute(question);
+        AgentAnswer answer = agentEngine.execute(question, java.util.List.of());
         
         assertNotNull(answer);
         assertNotNull(answer.answer());
@@ -54,7 +54,7 @@ class SpringAiAgentEngineIntegrationTest {
         AgentQuestion question = new AgentQuestion("conv-test-003", 
             "Expllica brevemente qué es Spring Boot");
         
-        AgentAnswer answer = agentEngine.execute(question);
+        AgentAnswer answer = agentEngine.execute(question, java.util.List.of());
         
         assertNotNull(answer);
         assertNotNull(answer.answer());

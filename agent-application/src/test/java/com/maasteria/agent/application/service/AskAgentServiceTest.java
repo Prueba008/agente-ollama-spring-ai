@@ -27,7 +27,7 @@ class AskAgentServiceTest {
         List<String> context = List.of("contexto");
 
         when(ragPort.retrieveRelevantContext(question)).thenReturn(context);
-        when(engine.execute(question)).thenReturn(expected);
+        when(engine.execute(question, context)).thenReturn(expected);
         when(outputGuardrail.validate(expected)).thenReturn(expected);
         when(evaluatorPort.evaluate(question, expected, context)).thenReturn(Map.of("relevance", 0.95, "faithfulness", 0.9));
 
@@ -36,7 +36,7 @@ class AskAgentServiceTest {
         assertEquals(expected, result);
         verify(inputGuardrail).validate(question);
         verify(ragPort).retrieveRelevantContext(question);
-        verify(engine).execute(question);
+        verify(engine).execute(question, context);
         verify(outputGuardrail).validate(expected);
         verify(evaluatorPort).evaluate(question, expected, context);
     }

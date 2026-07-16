@@ -16,6 +16,8 @@ agent:
     max-input-chars: ${AGENT_MAX_INPUT_CHARS:12000}
   rag:
     top-k: ${AGENT_RAG_TOP_K:4}
+  memory:
+    max-messages: ${AGENT_MEMORY_MAX_MESSAGES:20}
   evaluation:
     min-relevance: ${AGENT_MIN_RELEVANCE:0.70}
     min-faithfulness: ${AGENT_MIN_FAITHFULNESS:0.75}

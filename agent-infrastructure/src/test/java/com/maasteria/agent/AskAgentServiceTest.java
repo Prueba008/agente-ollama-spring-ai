@@ -30,8 +30,9 @@ class AskAgentServiceTest {
             assertSame(question, value);
             invocations.add("input");
         };
-        AgentEnginePort engine = value -> {
+        AgentEnginePort engine = (value, context) -> {
             assertSame(question, value);
+            assertEquals(List.of("contexto recuperado"), context);
             invocations.add("engine");
             return generated;
         };
@@ -70,7 +71,7 @@ class AskAgentServiceTest {
 
         AgentAnswer result = service.ask(question);
 
-        assertSame(validated, result);
+        assertEquals(validated, result);
         assertEquals(List.of("input", "rag", "engine", "output", "evaluator"), invocations);
     }
 }
