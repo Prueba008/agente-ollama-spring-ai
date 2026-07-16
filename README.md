@@ -78,6 +78,10 @@ La creación de extensiones, tabla e índices está versionada en `scripts/`. La
 
 Referencias oficiales: [Spring AI PGvector](https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html), [Ollama Embeddings](https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html), [Spring AI ETL](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html) y [pgvector](https://github.com/pgvector/pgvector).
 
+## Arquitectura validada con ArchUnit
+
+El comando `mvn clean verify` comprueba dirección de dependencias hexagonales, independencia de dominio/aplicación, contratos de puertos, ubicación de configuraciones y beans, anotaciones REST, convenciones de servicios y ausencia de inyección por campos.
+
 La especificación completa está en [SPEC.md](SPEC.md).
 
 La ficha técnica y el estado del proyecto están disponibles en
