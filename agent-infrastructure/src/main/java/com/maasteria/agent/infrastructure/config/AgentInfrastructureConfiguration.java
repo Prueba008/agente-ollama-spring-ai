@@ -12,6 +12,8 @@ import com.maasteria.agent.infrastructure.guardrail.DeterministicInputGuardrail;
 import com.maasteria.agent.infrastructure.guardrail.DeterministicOutputGuardrail;
 import com.maasteria.agent.infrastructure.tool.SystemTools;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -32,6 +34,12 @@ public class AgentInfrastructureConfiguration {
     }
 
     @Bean
+    ChatMemory chatMemory(Environment environment) {
+        int maxMessages = environment.getProperty("agent.memory.max-messages", Integer.class, 20);
+        return MessageWindowChatMemory.builder().maxMessages(maxMessages).build();
+    }
+
+    @Bean
     SystemTools systemTools(Clock agentClock) {
         return new SystemTools(agentClock);
     }
@@ -42,8 +50,8 @@ public class AgentInfrastructureConfiguration {
     }
 
     @Bean
-    com.maasteria.agent.application.port.out.EvaluatorPort evaluatorPort(ChatClient chatClient, Environment environment) {
-        return new SimpleEvaluator(chatClient, environment);
+    com.maasteria.agent.application.port.out.EvaluatorPort evaluatorPort() {
+        return new SimpleEvaluator();
     }
 
     @Bean
@@ -58,8 +66,8 @@ public class AgentInfrastructureConfiguration {
     }
 
     @Bean
-    AgentEnginePort agentEngine(ChatClient.Builder builder, SystemTools systemTools) {
-        return new SpringAiAgentEngine(builder, systemTools);
+    AgentEnginePort agentEngine(ChatClient.Builder builder, SystemTools systemTools, ChatMemory chatMemory) {
+        return new SpringAiAgentEngine(builder, systemTools, chatMemory);
     }
 
     @Bean
