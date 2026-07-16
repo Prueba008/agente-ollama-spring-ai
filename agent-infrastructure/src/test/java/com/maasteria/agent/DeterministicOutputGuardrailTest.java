@@ -2,6 +2,7 @@ package com.maasteria.agent;
 
 import com.maasteria.agent.domain.exception.GuardrailViolationException;
 import com.maasteria.agent.domain.model.AgentAnswer;
+import com.maasteria.agent.domain.model.SourceReference;
 import com.maasteria.agent.infrastructure.guardrail.DeterministicOutputGuardrail;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ class DeterministicOutputGuardrailTest {
     void aceptaUnaRespuestaValida() {
         AgentAnswer answer = new AgentAnswer(
                 "Respuesta fundamentada",
-                List.of(),
+                List.of(new SourceReference("arquitectura.md", "chunk-1")),
                 List.of(),
                 true,
                 0.95,
