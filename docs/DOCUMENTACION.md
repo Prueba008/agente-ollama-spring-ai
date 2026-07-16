@@ -58,6 +58,23 @@ Los scripts versionados son:
 
 La migración detallada se encuentra en `docs/MIGRACION-RAG-PGVECTOR.md`. Las fuentes oficiales utilizadas son [Spring AI PGvector](https://docs.spring.io/spring-ai/reference/api/vectordbs/pgvector.html), [Spring AI Ollama Embeddings](https://docs.spring.io/spring-ai/reference/api/embeddings/ollama-embeddings.html), [Spring AI ETL](https://docs.spring.io/spring-ai/reference/api/etl-pipeline.html) y [pgvector](https://github.com/pgvector/pgvector).
 
+## Validación de arquitectura con ArchUnit
+
+`ArchitectureTest` valida automáticamente durante `mvn verify`:
+
+- dirección de dependencias `API → infraestructura → aplicación → dominio`;
+- independencia del dominio respecto de Spring, Jakarta y capas externas;
+- independencia de aplicación respecto de Spring y adaptadores;
+- puertos de entrada y salida declarados como interfaces;
+- convención `*Service` para servicios de aplicación;
+- controladores anotados con `@RestController`;
+- configuraciones anotadas con `@Configuration`;
+- métodos `@Bean` ubicados únicamente en paquetes de configuración;
+- prohibición de inyección por campos con `@Autowired`;
+- prohibición de dependencias de API hacia adaptadores RAG, IA o evaluadores concretos.
+
+Una violación de cualquiera de estas reglas detiene el CI y evita degradaciones silenciosas de la arquitectura hexagonal.
+
 ### 2.1 agent-domain
 **Responsabilidad:** Contiene los modelos de dominio, reglas de negocio y excepciones independientes del framework.
 
