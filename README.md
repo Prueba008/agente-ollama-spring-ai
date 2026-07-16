@@ -37,3 +37,6 @@ curl -X POST http://localhost:8080/api/v1/agent/chat \
 ```
 
 La especificación completa está en [SPEC.md](SPEC.md).
+
+La ficha técnica y el estado del proyecto están disponibles en
+[docs/Proyecto_Agente_Ollama_Spring_AI_Java25.docx](docs/Proyecto_Agente_Ollama_Spring_AI_Java25.docx).
