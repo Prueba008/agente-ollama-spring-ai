@@ -1,0 +1,25 @@
+meta {
+  name: Especificación OpenAPI JSON
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v3/api-docs
+  body: none
+  auth: none
+}
+
+tests {
+  test("expone la especificación OpenAPI", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("documenta los endpoints del agente", function () {
+    const body = res.getBody();
+    expect(body.openapi).to.match(/^3\./);
+    expect(body.info.title).to.equal("Agente local con Ollama y Spring AI");
+    expect(body.paths).to.have.property("/api/v1/agent/chat");
+    expect(body.paths).to.have.property("/api/v1/agent/documents");
+  });
+}
