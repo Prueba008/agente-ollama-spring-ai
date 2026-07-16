@@ -84,5 +84,8 @@ El comando `mvn clean verify` comprueba dirección de dependencias hexagonales, 
 
 La especificación completa está en [SPEC.md](SPEC.md).
 
-La ficha técnica y el estado del proyecto están disponibles en
-[docs/Proyecto_Agente_Ollama_Spring_AI_Java25.docx](docs/Proyecto_Agente_Ollama_Spring_AI_Java25.docx).
+La documentación funcional y de arquitectura, con diagramas renderizados, está disponible en
+[docs/Documentacion_Funcional_Tecnica_Agente_Ollama_Spring_AI_Java25.doc](docs/Documentacion_Funcional_Tecnica_Agente_Ollama_Spring_AI_Java25.doc).
+
+La ficha técnica resumida está disponible en
+[docs/Proyecto_Agente_Ollama_Spring_AI_Java25.doc](docs/Proyecto_Agente_Ollama_Spring_AI_Java25.doc). Los diagramas PNG independientes se encuentran en [`docs/diagramas/`](docs/diagramas/).
