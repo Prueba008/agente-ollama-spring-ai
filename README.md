@@ -47,3 +47,6 @@ curl -X POST http://localhost:8080/api/v1/agent/documents \
 Las pruebas determinísticas se ejecutan siempre. Las pruebas que requieren Ollama sólo se habilitan al definir `OLLAMA_BASE_URL`.
 
 La especificación completa está en [SPEC.md](SPEC.md).
+
+La ficha técnica y el estado del proyecto están disponibles en
+[docs/Proyecto_Agente_Ollama_Spring_AI_Java25.docx](docs/Proyecto_Agente_Ollama_Spring_AI_Java25.docx).
