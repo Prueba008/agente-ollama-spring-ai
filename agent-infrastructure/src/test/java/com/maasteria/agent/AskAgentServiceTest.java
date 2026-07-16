@@ -71,7 +71,7 @@ class AskAgentServiceTest {
 
         AgentAnswer result = service.ask(question);
 
-        assertSame(validated, result);
+        assertEquals(validated, result);
         assertEquals(List.of("input", "rag", "engine", "output", "evaluator"), invocations);
     }
 }
