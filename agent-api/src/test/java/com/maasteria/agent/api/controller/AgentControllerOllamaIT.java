@@ -3,23 +3,19 @@ package com.maasteria.agent.api.controller;
 import com.maasteria.agent.application.port.in.AskAgentUseCase;
 import com.maasteria.agent.domain.model.AgentAnswer;
 import com.maasteria.agent.domain.model.AgentQuestion;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Tag("integration")
-@EnabledIfEnvironmentVariable(named = "OLLAMA_BASE_URL", matches = ".*")
 @SpringBootTest
 @TestPropertySource(properties = {
     "spring.ai.ollama.base-url=${OLLAMA_BASE_URL:http://localhost:11434}",
     "spring.ai.ollama.chat.options.model=${OLLAMA_CHAT_MODEL:qwen3:8b}"
 })
-class AgentControllerIntegrationTest {
+class AgentControllerOllamaIT {
 
     @Autowired
     private AskAgentUseCase askAgentUseCase;
