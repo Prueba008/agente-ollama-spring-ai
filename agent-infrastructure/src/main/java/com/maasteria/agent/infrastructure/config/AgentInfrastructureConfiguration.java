@@ -5,12 +5,14 @@ import com.maasteria.agent.application.port.out.AgentEnginePort;
 import com.maasteria.agent.application.port.out.InputGuardrailPort;
 import com.maasteria.agent.application.port.out.OutputGuardrailPort;
 import com.maasteria.agent.application.service.AskAgentService;
-import com.maasteria.agent.infrastructure.ai.SimpleRagAdapter;
+import com.maasteria.agent.application.service.VectorRagService;
 import com.maasteria.agent.infrastructure.ai.SpringAiAgentEngine;
 import com.maasteria.agent.infrastructure.evaluator.SimpleEvaluator;
 import com.maasteria.agent.infrastructure.guardrail.DeterministicInputGuardrail;
 import com.maasteria.agent.infrastructure.guardrail.DeterministicOutputGuardrail;
 import com.maasteria.agent.infrastructure.tool.SystemTools;
+import com.maasteria.agent.infrastructure.rag.OverlappingTextChunker;
+import com.maasteria.agent.infrastructure.rag.PgVectorIndexAdapter;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
@@ -45,8 +47,25 @@ public class AgentInfrastructureConfiguration {
     }
 
     @Bean
-    com.maasteria.agent.application.port.out.RagPort ragPort(Environment environment) {
-        return new SimpleRagAdapter(environment);
+    com.maasteria.agent.application.port.out.DocumentChunkerPort documentChunker(Environment environment) {
+        int size = environment.getProperty("agent.rag.chunk-size", Integer.class, 1000);
+        int overlap = environment.getProperty("agent.rag.chunk-overlap", Integer.class, 150);
+        return new OverlappingTextChunker(size, overlap);
+    }
+
+    @Bean
+    com.maasteria.agent.application.port.out.VectorIndexPort vectorIndex(org.springframework.ai.vectorstore.VectorStore store) {
+        return new PgVectorIndexAdapter(store);
+    }
+
+    @Bean
+    com.maasteria.agent.application.port.out.RagPort ragPort(
+            com.maasteria.agent.application.port.out.DocumentChunkerPort chunker,
+            com.maasteria.agent.application.port.out.VectorIndexPort index,
+            Environment environment) {
+        int topK = environment.getProperty("agent.rag.top-k", Integer.class, 4);
+        double threshold = environment.getProperty("agent.rag.similarity-threshold", Double.class, 0.70);
+        return new VectorRagService(chunker, index, topK, threshold);
     }
 
     @Bean

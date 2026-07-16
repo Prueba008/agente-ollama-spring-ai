@@ -1,6 +1,10 @@
 spring:
   application:
     name: agente-ollama-spring-ai
+  datasource:
+    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/agentdb}
+    username: ${POSTGRES_USER:agent}
+    password: ${POSTGRES_PASSWORD:agent}
   ai:
     model:
       chat: ollama
@@ -10,12 +14,26 @@ spring:
         options:
           model: ${OLLAMA_CHAT_MODEL:qwen3:8b}
           temperature: 0.2
+      embedding:
+        model: ${OLLAMA_EMBEDDING_MODEL:nomic-embed-text}
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: ${EMBEDDING_DIMENSIONS:768}
+        initialize-schema: false
+        schema-validation: true
+        schema-name: public
+        table-name: vector_store
 
 agent:
   guardrails:
     max-input-chars: ${AGENT_MAX_INPUT_CHARS:12000}
   rag:
     top-k: ${AGENT_RAG_TOP_K:4}
+    similarity-threshold: ${AGENT_RAG_SIMILARITY_THRESHOLD:0.70}
+    chunk-size: ${AGENT_RAG_CHUNK_SIZE:1000}
+    chunk-overlap: ${AGENT_RAG_CHUNK_OVERLAP:150}
   memory:
     max-messages: ${AGENT_MEMORY_MAX_MESSAGES:20}
   evaluation:
