@@ -77,6 +77,9 @@ public final class AskAgentService implements AskAgentUseCase {
         if (metrics.getOrDefault("faithfulness", 1.0) < 0.75) {
             warnings.add("La respuesta no alcanzó el umbral de fidelidad");
         }
+        if (metrics.getOrDefault("hallucination_risk", 0.0) > 0.25) {
+            warnings.add("Se detectó riesgo de afirmaciones no respaldadas");
+        }
         return new AgentAnswer(answer.answer(), answer.sources(), answer.toolsUsed(),
                 answer.grounded(), answer.confidence(), warnings);
     }
