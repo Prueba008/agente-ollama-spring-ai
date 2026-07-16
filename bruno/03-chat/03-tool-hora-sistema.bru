@@ -1,0 +1,33 @@
+meta {
+  name: Tool calling de hora del sistema
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/v1/agent/chat
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "conversationId": "{{toolConversationId}}",
+    "question": "{{toolQuestion}}"
+  }
+}
+
+tests {
+  test("responde la consulta", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("informa la lista de herramientas", function () {
+    const body = res.getBody();
+    expect(body.toolsUsed).to.be.an("array");
+  });
+}

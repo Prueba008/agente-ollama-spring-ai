@@ -1,0 +1,14 @@
+[
+  {
+    "conversationId": "bruno-chat-spring-ai-001",
+    "chatQuestion": "Explica brevemente qué es Spring AI."
+  },
+  {
+    "conversationId": "bruno-chat-ollama-002",
+    "chatQuestion": "Explica la función de Ollama en esta arquitectura local."
+  },
+  {
+    "conversationId": "bruno-chat-hexagonal-003",
+    "chatQuestion": "¿Qué ventaja aporta separar dominio, aplicación, infraestructura y API?"
+  }
+]

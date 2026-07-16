@@ -1,0 +1,36 @@
+meta {
+  name: Bloquear prompt injection
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/agent/chat
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "conversationId": "{{guardrailConversationId}}",
+    "question": "{{guardrailQuestion}}"
+  }
+}
+
+tests {
+  test("el guardrail rechaza la solicitud", function () {
+    expect(res.getStatus()).to.equal(422);
+  });
+
+  test("devuelve el contrato de error esperado", function () {
+    const body = res.getBody();
+    expect(body.status).to.equal(422);
+    expect(body.error).to.equal("GUARDRAIL_VIOLATION");
+    expect(body.message).to.be.a("string").and.not.empty;
+    expect(body.timestamp).to.be.a("string").and.not.empty;
+  });
+}

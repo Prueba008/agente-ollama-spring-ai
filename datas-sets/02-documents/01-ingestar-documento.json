@@ -1,0 +1,14 @@
+[
+  {
+    "documentSourceName": "arquitectura-outbox.md",
+    "documentContent": "El patrón outbox persiste el cambio de negocio y el evento en la misma transacción. Un publicador asíncrono lee la tabla outbox y envía el evento al broker, reduciendo inconsistencias entre la base de datos y Kafka."
+  },
+  {
+    "documentSourceName": "arquitectura-hexagonal.md",
+    "documentContent": "La arquitectura hexagonal protege el núcleo mediante puertos. Los adaptadores REST, PostgreSQL, PGVector y Ollama implementan esos contratos sin trasladar dependencias tecnológicas al dominio."
+  },
+  {
+    "documentSourceName": "spring-ai-tools.md",
+    "documentContent": "Spring AI permite declarar herramientas Java y registrarlas en ChatClient. Cada herramienta debe validar sus parámetros, limitar sus efectos y devolver resultados serializables."
+  }
+]

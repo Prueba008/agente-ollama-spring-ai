@@ -1,0 +1,35 @@
+meta {
+  name: Consulta respaldada por RAG
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/agent/chat
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "conversationId": "{{ragConversationId}}",
+    "question": "{{ragQuestion}}"
+  }
+}
+
+tests {
+  test("responde la consulta RAG", function () {
+    expect(res.getStatus()).to.equal(200);
+  });
+
+  test("devuelve estructura de fuentes y grounding", function () {
+    const body = res.getBody();
+    expect(body.sources).to.be.an("array");
+    expect(body.grounded).to.be.a("boolean");
+    expect(body.warnings).to.be.an("array");
+  });
+}

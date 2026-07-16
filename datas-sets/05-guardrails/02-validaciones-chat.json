@@ -1,0 +1,14 @@
+[
+  {
+    "case": "question-vacia",
+    "conversationId": "bruno-validation-001",
+    "question": "",
+    "expectedStatus": 400
+  },
+  {
+    "case": "conversationId-vacio",
+    "conversationId": "",
+    "question": "Pregunta válida",
+    "expectedStatus": 400
+  }
+]
