@@ -36,5 +36,5 @@ La base original no cumplía el flujo definido por `SPEC.md`: recuperaba RAG sin
 | Memoria por conversación | Cumple |
 | Guardrails Java | Cumple |
 | Evaluadores y umbrales | Cumple, con warnings |
-| CI sin Ollama | Cumple por diseño; pendiente verificar ejecución remota del commit |
+| CI sin Ollama | Cumple; `mvn clean verify` exitoso en GitHub Actions con Temurin 21 |
 | Integración real Ollama | Opt-in mediante `OLLAMA_BASE_URL` |
